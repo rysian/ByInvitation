@@ -9,14 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import java.io.IOException;
-import java.net.URL;
 
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.IOUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
 
 public class commandInvite implements CommandExecutor
 {
@@ -42,41 +35,35 @@ public class commandInvite implements CommandExecutor
         else if (args.length == 2)
         {
             //Account for invalid usernames, users that have already been added
-             if(args[0].equalsIgnoreCase("inv"))
-            {
-                Player commander = (Player) sender;
-                userManager user = new userManager(commander.getUniqueId());
-                user.load();
-                int invitesLeft = user.getConfig().getInt("inviteCount");
-                if (invitesLeft >= 1)
-                {
+             if(args[0].equalsIgnoreCase("inv")) {
+                 Player commander = (Player) sender;
+                 userManager user = new userManager(commander.getUniqueId());
+                 user.load();
+                 int invitesLeft = user.getConfig().getInt("inviteCount");
+                 if (invitesLeft >= 1)
+                 {
+                     String playerName = args[1];
+                     UUID playerAdd = resolvePlayer(playerName);
+                     if (!playerAdd.toString().isEmpty()) {
+                         if (Bukkit.getOfflinePlayer(playerAdd).isOnline()) {
+                             if (Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(playerAdd)))
+                                 sender.sendMessage("User already whitelisted!");
+                         } else {
+                             user.save(--invitesLeft);
+                             Bukkit.getOfflinePlayer(playerAdd).setWhitelisted(true);
+                             Bukkit.reloadWhitelist();
+                             sender.sendMessage(playerName + " has been invited!");
+                         }
+                     }
 
+                 }
+                 else {
+                     sender.sendMessage("You have no invites available.");
+                 }
 
-                    String playerName = args[1];
-                    UUID playerAdd = resolvePlayer(playerName);
-                    if(!playerAdd.toString().isEmpty())
-                    {
-                        if(Bukkit.getOfflinePlayer(playerAdd).isOnline()) {
-                            if (Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(playerAdd)))
-                                sender.sendMessage("User already whitelisted!");
-                        }
-                        else {
-                            user.save(--invitesLeft);
-                            sender.sendMessage(playerName);
-                            Bukkit.getOfflinePlayer(playerAdd).setWhitelisted(true);
-                            Bukkit.reloadWhitelist();
-                        }
-                    }
-
-                }
-                else
-                {
-                    sender.sendMessage("Invalid user!");
-                }
-
-                } else {
-                    sender.sendMessage("You have no available invites!");
-                }
+             }
+             else
+                 return false;
         }
 
 
@@ -86,14 +73,49 @@ public class commandInvite implements CommandExecutor
             if(args[0].equalsIgnoreCase("give"))
             {
                 String playerName = args[1];
-                userManager user = new userManager(resolvePlayer(playerName));
-                user.load();
+                if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
+                    userManager user = new userManager(resolvePlayer(playerName));
+                    user.load();
+                    try {
+                        int currentInviteBal = user.getConfig().getInt("inviteCount");
+                        user.save((Integer.parseInt(args[2]) + currentInviteBal));
+                        sender.sendMessage(args[2] + " invite(s) have been given to " + args[1]);
+                    } catch(NumberFormatException | NullPointerException e) {
+                        return false;
+                    }
+                }
+                else
+                {
+                    sender.sendMessage("Invalid user.");
+                }
 
             }
+            else if(args[0].equalsIgnoreCase("set"))
+            {
+                String playerName = args[1];
+                if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
+                    userManager user = new userManager(resolvePlayer(playerName));
+                    user.load();
+                    try {
+                        user.save(Integer.parseInt(args[2]));
+                        sender.sendMessage(args[1] + "'s invite(s) has been set to " + args[2]);
+                    } catch(NumberFormatException | NullPointerException e) {
+                        return false;
+                    }
+                }
+                else
+                {
+                    sender.sendMessage("Invalid user.");
+                }
+
+            }
+            else
+                return false;
         }
+        else
+            return false;
 
-
-        // If the player (or console) uses our command correct, we can return true
+        // If the player (or console) uses our command correctly, we can return true.
         return true;
 
 
@@ -101,8 +123,10 @@ public class commandInvite implements CommandExecutor
 
     private UUID resolvePlayer(String playerName)
     {
+
         OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerName);
         return player.getUniqueId();
+
     }
 
 
