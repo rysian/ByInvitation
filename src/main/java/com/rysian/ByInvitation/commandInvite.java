@@ -53,10 +53,9 @@ public class commandInvite implements CommandExecutor
                      String playerName = args[1];
                      UUID playerAdd = resolvePlayer(playerName);
                      if (!playerAdd.toString().isEmpty()) {
-                         if (Bukkit.getOfflinePlayer(playerAdd).isOnline()) {
-                             if (Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(playerAdd)))
-                                 sender.sendMessage("User already whitelisted!");
-                         } else {
+                         if (Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(playerAdd)))
+                             sender.sendMessage("User already whitelisted!");
+                          else {
                              user.save(--invitesLeft);
                              Bukkit.getOfflinePlayer(playerAdd).setWhitelisted(true);
                              Bukkit.reloadWhitelist();
