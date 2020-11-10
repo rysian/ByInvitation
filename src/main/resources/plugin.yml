@@ -5,25 +5,39 @@ author: rysian
 api-version: 1.16
 commands:
   winvite:
-    description: Lists the number of invites you can use.
-    usage: /<command> bal <player>
+    description: ByInvitation's general command.
+    usage: /<command>
+  winvite bal:
+    description: Check the number of invites you or others have left.
+    usage: |
+      /<command>
+      /<command> <player>
+  winvite inv:
+     description: Invite a player
+     usage: /<command> <player>
+  winvite give:
+    description: Gives the specified player invites to use
+    usage: /<command> <player>
+  winvite set:
+    description: Sets the invite count of a specified player. This overwites any invites they may have.
+    usage: /<command> <player>
 
 permissions:
   winvite.*:
     description: Gives access to all ByInvitation commands
     default: op
     children:
-      ByInvitation.winvite.bal: true
-      ByInvitation.winvite.give: true
-      ByInvitation.winvite.set: true
-      ByInvitation.winvite.bal.*: true
+      winvite.bal: true
+      winvite.give: true
+      winvite.set: true
+      winvite.bal.*: true
   winvite.guest:
     description: Allows for balance checking
     children:
-      ByInvitation.winvite.bal: true
+      winvite.bal: true
   winvite.user:
     description: Allows for inviting people and checking balance
     default: true
     children:
-      ByInvitation.winvite.bal.player: true
-      ByInvitation.winvite.inv: true
+      winvite.bal: true
+      winvite.inv: true

@@ -16,8 +16,10 @@ public class commandInvite implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
+        if(args.length == 0)
+            sender.sendMessage("ByInvitation v0.1 - Whitelisting via invitation! Type /help ByInvitation for a list of commands.");
         //If user types /winvite bal
-        if(args.length == 1)
+        else if(args.length == 1)
         {
             if(args[0].equalsIgnoreCase("bal"))
             {
