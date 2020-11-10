@@ -1,7 +1,29 @@
 name: ByInvitation
 version: 0.1
 main: com.rysian.ByInvitation.byInvitation
+author: rysian
 api-version: 1.16
 commands:
   winvite:
     description: Lists the number of invites you can use.
+    usage: /<command> bal <player>
+
+permissions:
+  winvite.*:
+    description: Gives access to all ByInvitation commands
+    default: op
+    children:
+      ByInvitation.winvite.bal: true
+      ByInvitation.winvite.give: true
+      ByInvitation.winvite.set: true
+      ByInvitation.winvite.bal.*: true
+  winvite.guest:
+    description: Allows for balance checking
+    children:
+      ByInvitation.winvite.bal: true
+  winvite.user:
+    description: Allows for inviting people and checking balance
+    default: true
+    children:
+      ByInvitation.winvite.bal.player: true
+      ByInvitation.winvite.inv: true

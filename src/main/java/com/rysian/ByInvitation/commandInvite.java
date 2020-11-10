@@ -37,6 +37,10 @@ public class commandInvite implements CommandExecutor
             //Account for invalid usernames, users that have already been added
              if(args[0].equalsIgnoreCase("inv")) {
                  Player commander = (Player) sender;
+
+                 if(!commander.hasPermission("winvite.user"))
+                     sender.sendMessage("Insufficient permissions.");
+
                  userManager user = new userManager(commander.getUniqueId());
                  user.load();
                  int invitesLeft = user.getConfig().getInt("inviteCount");
@@ -64,8 +68,12 @@ public class commandInvite implements CommandExecutor
              }
              else if(args[0].equalsIgnoreCase("bal"))
              {
-                 UUID playerCheck = resolvePlayer(args[1]);
-                 if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
+                 Player commander = (Player) sender;
+
+                 if(!commander.hasPermission("winvite.*"))
+                     sender.sendMessage("Insufficient permissions.");
+                 else if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
+                     UUID playerCheck = resolvePlayer(args[1]);
                      userManager user = new userManager(playerCheck);
                      user.load();
                      int invitesLeft = user.getConfig().getInt("inviteCount");
@@ -86,14 +94,42 @@ public class commandInvite implements CommandExecutor
         {
             if(args[0].equalsIgnoreCase("give"))
             {
-                String playerName = args[1];
-                if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
+                Player commander = (Player) sender;
+
+                if(!commander.hasPermission("winvite.*"))
+                    sender.sendMessage("Insufficient permissions.");
+                else if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
+                    String playerName = args[1];
                     userManager user = new userManager(resolvePlayer(playerName));
                     user.load();
                     try {
                         int currentInviteBal = user.getConfig().getInt("inviteCount");
                         user.save((Integer.parseInt(args[2]) + currentInviteBal));
                         sender.sendMessage(args[2] + " invite(s) have been given to " + args[1]);
+                    } catch(NumberFormatException | NullPointerException e) {
+                        return false;
+                    }
+                }
+                else
+                {
+                    sender.sendMessage("Invalid user.");
+                }
+
+            }
+            else if(args[0].equalsIgnoreCase("set"))
+            {
+                Player commander = (Player) sender;
+
+                if(!commander.hasPermission("winvite.*"))
+                    sender.sendMessage("Insufficient permissions.");
+                else if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
+                    String playerName = args[1];
+                    userManager user = new userManager(resolvePlayer(playerName));
+                    user.load();
+                    try {
+
+                        user.save((Integer.parseInt(args[2])));
+                        sender.sendMessage(args[1] + "'s invites has been set to " + args[2]);
                     } catch(NumberFormatException | NullPointerException e) {
                         return false;
                     }
