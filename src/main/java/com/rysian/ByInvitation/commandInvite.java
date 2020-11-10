@@ -31,6 +31,8 @@ public class commandInvite implements CommandExecutor
 
 
             }
+            else
+                return false;
 
         }
         //If user types  /winvite inv *username* or /winvite bal *username*
