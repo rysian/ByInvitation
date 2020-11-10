@@ -31,10 +31,6 @@ permissions:
       winvite.give: true
       winvite.set: true
       winvite.bal.*: true
-  winvite.guest:
-    description: Allows for balance checking
-    children:
-      winvite.bal: true
   winvite.user:
     description: Allows for inviting people and checking balance
     default: true
