@@ -31,7 +31,7 @@ public class commandInvite implements CommandExecutor
             }
 
         }
-        //If user types  /winvite inv *username*
+        //If user types  /winvite inv *username* or /winvite bal *username*
         else if (args.length == 2)
         {
             //Account for invalid usernames, users that have already been added
@@ -62,6 +62,20 @@ public class commandInvite implements CommandExecutor
                  }
 
              }
+             else if(args[0].equalsIgnoreCase("bal"))
+             {
+                 UUID playerCheck = resolvePlayer(args[1]);
+                 if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
+                     userManager user = new userManager(playerCheck);
+                     user.load();
+                     int invitesLeft = user.getConfig().getInt("inviteCount");
+                     sender.sendMessage(args[1] + " has " + invitesLeft + " invite(s) left.");
+                 }
+                 else
+                 {
+                     sender.sendMessage("Invalid user.");
+                 }
+             }
              else
                  return false;
         }
@@ -90,25 +104,7 @@ public class commandInvite implements CommandExecutor
                 }
 
             }
-            else if(args[0].equalsIgnoreCase("set"))
-            {
-                String playerName = args[1];
-                if(Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
-                    userManager user = new userManager(resolvePlayer(playerName));
-                    user.load();
-                    try {
-                        user.save(Integer.parseInt(args[2]));
-                        sender.sendMessage(args[1] + "'s invite(s) has been set to " + args[2]);
-                    } catch(NumberFormatException | NullPointerException e) {
-                        return false;
-                    }
-                }
-                else
-                {
-                    sender.sendMessage("Invalid user.");
-                }
 
-            }
             else
                 return false;
         }
