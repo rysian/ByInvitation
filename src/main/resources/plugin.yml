@@ -1,4 +1,7 @@
-name: ByInvatation
+name: ByInvitation
 version: 0.1
 main: com.rysian.ByInvitation.byInvitation
 api-version: 1.16
+commands:
+  winvite:
+    description: Lists the number of invites you can use.

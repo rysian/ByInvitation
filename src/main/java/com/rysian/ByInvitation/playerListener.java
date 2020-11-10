@@ -10,7 +10,6 @@ public class playerListener implements Listener
     {
         userManager user = new userManager(e.getUniqueId());
         user.load();
-        user.save(0);
 
     }
 

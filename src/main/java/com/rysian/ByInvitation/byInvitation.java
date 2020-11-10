@@ -6,7 +6,7 @@ public class byInvitation extends JavaPlugin
 
     public void onEnable()
     {
-       // this.getCommand("invite").setExecutor(new commandInvite());
+        this.getCommand("winvite").setExecutor(new commandInvite());
         getServer().getPluginManager().registerEvents(new playerListener(), this);
     }
 

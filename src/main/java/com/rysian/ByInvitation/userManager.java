@@ -29,7 +29,7 @@ public class userManager
     public void load()
     {
 
-        File folder = new File(plugin.getDataFolder(), "Userdata");
+        File folder = new File(plugin.getDataFolder(), "players");
 
         if (!folder.exists())
         {
@@ -41,14 +41,22 @@ public class userManager
         {
             try
             {
+                //Create a new user file, load config and write a 0 invite count.
                 this.file.createNewFile();
+                this.config = YamlConfiguration.loadConfiguration(this.file);
+                save(0);
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
         }
-        this.config = YamlConfiguration.loadConfiguration(this.file);
+        else
+        {
+            //User file exists, just load config
+            this.config = YamlConfiguration.loadConfiguration(this.file);
+        }
+
     }
 
     public File getFile()
