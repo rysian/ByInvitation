@@ -1,4 +1,4 @@
 name: ByInvatation
 version: 0.1
-main: com.rysian.ByInvatation.serverInvite
+main: com.rysian.ByInvitation.byInvitation
 api-version: 1.16

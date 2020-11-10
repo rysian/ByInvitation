@@ -1,7 +1,7 @@
-package com.rysian.ByInvatation;
+package com.rysian.ByInvitation;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.event.player.PlayerJoinEvent;
-public class byInvatation extends JavaPlugin
+
+public class byInvitation extends JavaPlugin
 {
 
     public void onEnable()

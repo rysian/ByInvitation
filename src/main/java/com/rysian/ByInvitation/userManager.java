@@ -1,8 +1,7 @@
-package com.rysian.ByInvatation;
+package com.rysian.ByInvitation;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.UUID;
@@ -10,7 +9,7 @@ import java.util.UUID;
 public class userManager
 {
     private UUID uuid;
-    private byInvatation plugin = byInvatation.getPlugin(byInvatation.class);
+    private byInvitation plugin = byInvitation.getPlugin(byInvitation.class);
 
     private File file;
     private FileConfiguration config;

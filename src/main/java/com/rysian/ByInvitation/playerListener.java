@@ -1,4 +1,4 @@
-package com.rysian.ByInvatation;
+package com.rysian.ByInvitation;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
