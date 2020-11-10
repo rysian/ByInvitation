@@ -1,5 +1,5 @@
 name: ByInvitation
-version: 0.1
+version: 0.2
 main: com.rysian.ByInvitation.byInvitation
 author: rysian
 api-version: 1.16
