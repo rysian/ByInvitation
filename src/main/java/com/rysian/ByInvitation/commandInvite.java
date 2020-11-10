@@ -17,7 +17,7 @@ public class commandInvite implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
         if(args.length == 0)
-            sender.sendMessage("ByInvitation v0.1 - Whitelisting via invitation! Type /help ByInvitation for a list of commands.");
+            sender.sendMessage("§6[ByInvitation] §4ByInvitation v0.1 - Whitelisting via invitation! Type /help ByInvitation for a list of commands.");
         //If user types /winvite bal
         else if(args.length == 1)
         {
@@ -29,11 +29,11 @@ public class commandInvite implements CommandExecutor
                     userManager user = new userManager(commander.getUniqueId());
                     user.load();
                     int invitesLeft = user.getConfig().getInt("inviteCount");
-                    sender.sendMessage("You have " + invitesLeft + " invite(s) left!");
+                    sender.sendMessage("§6[ByInvitation] §4You have " + invitesLeft + " invite(s) left!");
                 }
                 else
                 {
-                    sender.sendMessage("Please run /winvite bal <player> when executing the command from the console");
+                    sender.sendMessage("§6[ByInvitation] §4Please run /winvite bal <player> when executing the command from the console");
                 }
 
 
@@ -52,7 +52,7 @@ public class commandInvite implements CommandExecutor
                  if (sender instanceof Player) {
                      Player commander = (Player) sender;
                      if (!commander.hasPermission("winvite.user")) {
-                         sender.sendMessage("Insufficient permissions.");
+                         sender.sendMessage("§cInsufficient permissions.");
                          return true;
                      }
 
@@ -64,17 +64,17 @@ public class commandInvite implements CommandExecutor
                          UUID playerAdd = resolvePlayer(playerName);
                          if (!playerAdd.toString().isEmpty()) {
                              if (Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(playerAdd)))
-                                 sender.sendMessage("User already whitelisted!");
+                                 sender.sendMessage("§6[ByInvitation] §4User already whitelisted!");
                              else {
                                  user.save(--invitesLeft);
                                  Bukkit.getOfflinePlayer(playerAdd).setWhitelisted(true);
                                  Bukkit.reloadWhitelist();
-                                 sender.sendMessage(playerName + " has been invited!");
+                                 sender.sendMessage("§6[ByInvitation] §4" + playerName + " has been invited!");
                              }
                          }
 
                      } else {
-                         sender.sendMessage("You have no invites available.");
+                         sender.sendMessage("§6[ByInvitation] §4You have no invites available :(");
                      }
                  }
                  //Command executed from console
@@ -84,11 +84,11 @@ public class commandInvite implements CommandExecutor
                      UUID playerAdd = resolvePlayer(playerName);
                      if (!playerAdd.toString().isEmpty()) {
                          if (Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(playerAdd)))
-                             sender.sendMessage("User already whitelisted!");
+                             sender.sendMessage("§6[ByInvitation] §4User already whitelisted!");
                          else {
                              Bukkit.getOfflinePlayer(playerAdd).setWhitelisted(true);
                              Bukkit.reloadWhitelist();
-                             sender.sendMessage(playerName + " has been invited!");
+                             sender.sendMessage("§6[ByInvitation] §4" + playerName + " has been invited!");
                          }
                      }
                  }
@@ -100,15 +100,15 @@ public class commandInvite implements CommandExecutor
                  if (sender instanceof Player) {
                      Player commander = (Player) sender;
                      if (!commander.hasPermission("winvite.*"))
-                         sender.sendMessage("Insufficient permissions.");
+                         sender.sendMessage("§cInsufficient permissions.");
                      else if (Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getOfflinePlayer(args[1]))) {
                          UUID playerCheck = resolvePlayer(args[1]);
                          userManager user = new userManager(playerCheck);
                          user.load();
                          int invitesLeft = user.getConfig().getInt("inviteCount");
-                         sender.sendMessage(args[1] + " has " + invitesLeft + " invite(s) left.");
+                         sender.sendMessage("§6[ByInvitation] §4" + args[1] + " has " + invitesLeft + " invite(s) left.");
                      } else {
-                         sender.sendMessage("Invalid user.");
+                         sender.sendMessage("§6[ByInvitation] §4Invalid user.");
                      }
                  }
                  //Running from console
@@ -118,9 +118,9 @@ public class commandInvite implements CommandExecutor
                          userManager user = new userManager(playerCheck);
                          user.load();
                          int invitesLeft = user.getConfig().getInt("inviteCount");
-                         sender.sendMessage(args[1] + " has " + invitesLeft + " invite(s) left.");
+                         sender.sendMessage("§6[ByInvitation] §4" + args[1] + " has " + invitesLeft + " invite(s) left.");
                      } else {
-                         sender.sendMessage("Invalid user.");
+                         sender.sendMessage("§6[ByInvitation] §4Invalid user.");
                      }
                  }
              }
@@ -138,7 +138,7 @@ public class commandInvite implements CommandExecutor
                 if (sender instanceof Player) {
                     Player commander = (Player) sender;
                     if (!commander.hasPermission("winvite.*")) {
-                        sender.sendMessage("Insufficient permissions.");
+                        sender.sendMessage("§cInsufficient permissions.");
                         return true;
                     }
                 }
@@ -149,11 +149,11 @@ public class commandInvite implements CommandExecutor
                     try {
                         int newVal = Integer.parseInt(args[2]);
                         if(newVal < 0)
-                            sender.sendMessage("Please specify an invite amount of zero or more.");
+                            sender.sendMessage("§6[ByInvitation] §4Please specify an invite amount of zero or more.");
                         else {
                             int currentInviteBal = user.getConfig().getInt("inviteCount");
                             user.save(newVal + currentInviteBal);
-                            sender.sendMessage(args[2] + " invite(s) have been given to " + args[1]);
+                            sender.sendMessage("§6[ByInvitation] §4" + args[2] + " invite(s) have been given to " + args[1]);
                         }
                     } catch(NumberFormatException | NullPointerException e) {
                         return false;
@@ -161,7 +161,7 @@ public class commandInvite implements CommandExecutor
                 }
                 else
                 {
-                    sender.sendMessage("Invalid user.");
+                    sender.sendMessage("§6[ByInvitation] §4Invalid user.");
                 }
 
             }
@@ -170,7 +170,7 @@ public class commandInvite implements CommandExecutor
                 if (sender instanceof Player) {
                     Player commander = (Player) sender;
                     if (!commander.hasPermission("winvite.*")) {
-                        sender.sendMessage("Insufficient permissions.");
+                        sender.sendMessage("§cInsufficient permissions.");
                         return true;
                     }
                 }
@@ -181,11 +181,11 @@ public class commandInvite implements CommandExecutor
                     try {
                         int newVal = Integer.parseInt(args[2]);
                         if(newVal < 0)
-                            sender.sendMessage("Please specify an invite amount of zero or more.");
+                            sender.sendMessage("§6[ByInvitation] §4Please specify an invite amount of zero or more.");
                         else
                         {
                             user.save(newVal);
-                            sender.sendMessage(args[1] + "'s invites has been set to " + args[2]);
+                            sender.sendMessage("§6[ByInvitation] §4" + args[1] + "'s invites has been set to " + args[2]);
                         }
                     } catch(NumberFormatException | NullPointerException e) {
                         return false;
@@ -193,7 +193,7 @@ public class commandInvite implements CommandExecutor
                 }
                 else
                 {
-                    sender.sendMessage("Invalid user.");
+                    sender.sendMessage("§6[ByInvitation] §4Invalid user.");
                 }
 
             }
